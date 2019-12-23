@@ -1,0 +1,16 @@
+{
+    "name": "My Football",
+    "short_name": "My Football",
+    "description": "Submission from Dicoding",
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "background_color": "#2196f3",
+    "theme_color": "#2196f3",
+    "icons": [
+        {
+            "src": "./assets/img/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
