@@ -2,6 +2,17 @@ body {
     overscroll-behavior-y: contain;
 }
 
+#toast-container {
+    top: 10%;
+    right: 10% !important;
+    left: 10% !important;
+    min-width: 50px !important;
+}
+
+.btn.round {
+    border-radius: 40px;
+}
+
 .top-right {
     position: absolute;
     top: 0.7em;

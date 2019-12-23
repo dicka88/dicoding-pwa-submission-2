@@ -69,5 +69,6 @@
         }).then(res => {
             loadSidebar()
             console.log("added to indexDb");
+            M.toast({ html: 'Success data saved', classes: 'rounded' });
         })
     }

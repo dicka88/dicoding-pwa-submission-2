@@ -9,6 +9,10 @@ $(document).ready(() => {
         let name = form.find('#name').val()
         let gender = form.find('input[name=gender]:checked').val()
 
+        if (nickname.length > 10 || name.length > 20) return
+
         updateAccount(nickname, name, gender)
     })
+
+    $('#nickname,#name').characterCounter()
 })

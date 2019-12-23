@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     colorPlateListener()
 
-    feedbackListener()
+    //feedbackListener()
 });
 
 const route = (page) => {
@@ -60,7 +60,10 @@ const route = (page) => {
                     let thanks = `<div class="s12 l12 center notif">
                                         <div><img class="responsive-img signal" src="./assets/img/ui/thanks.svg"></div>
                                         <div><h3>Thank you :)</h3></div>
-                                        <div><span>your feedback supporting me</span></div>
+                                        <div><span>your feedback supporting me</span></div><br><br>
+                                        <div class="center">
+                                            <button class="btn waves-effect waves-light round" onclick="route('home')"><i class="material-icons">arrow_back</i></button>
+                                        </div>
                                     </div>`
                     let errMessage = `<div class="s12 l12 center notif">
                                         <div><img class="responsive-img signal" src="./assets/img/ui/signal.svg"></div>
@@ -112,27 +115,27 @@ const player_info = player_name => {
     }).then($('#player_info').modal())
 }
 
-const feedbackListener = () => {
-    $('.feedback-send').click(() => {
+// const feedbackListener = () => {
+//     $('.feedback-send').click(() => {
 
-        let email = $('#email').val()
-        let message = $('#message').val()
-        let container = $('#body-content')
-        let thanks = `thanks`
-        let errMessage = `no internet connection`
+//         let email = $('#email').val()
+//         let message = $('#message').val()
+//         let container = $('#body-content')
+//         let thanks = `thanks`
+//         let errMessage = `no internet connection`
 
-        $.ajax({
-            method: 'get',
-            url: 'https://api.kangkode.site/v1/feedback/give',
-            success: res => {
-                container.html(thanks)
-            },
-            error: err => {
-                container.html(errMessage)
-            }
-        })
-    })
-}
+//         $.ajax({
+//             method: 'get',
+//             url: 'https://api.kangkode.site/v1/feedback/give',
+//             success: res => {
+//                 container.html(thanks)
+//             },
+//             error: err => {
+//                 container.html(errMessage)
+//             }
+//         })
+//     })
+// }
 
 const colorPlateListener = () => {
     $('#color_plate > li > a').each(function() {
