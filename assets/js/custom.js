@@ -156,7 +156,7 @@ const colorPlateListener = () => {
             $('#card-nav').attr('class', `card-panel ${color} rem-mt`)
                 // $('.scroll-to-top, .btn-back').removeClass('red green grey blue darken-1 darken-4')
                 // $('.scroll-to-top, .btn-back').addClass(color)
-            $('.red, .green, .grey.darken-4, .blue.darken-1').each(function() {
+            $('.red, .green, .grey.darken-4, .blue.darken-1').not('i.red, i.green, i.grey.darken-4, i.blue.darken-1').each(function() {
                 $(this).removeClass('red green grey blue darken-1 darken-4')
                 $(this).addClass(color)
             })

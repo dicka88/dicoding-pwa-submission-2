@@ -25,6 +25,7 @@ const urlToCache = [
     "./assets/css/style.css",
     "./assets/js/custom.js",
     "./assets/js/indexDb.js",
+    "./assets/js/settings.js",
 
     //image
     "./assets/img/icon-512x512.png",
@@ -55,8 +56,13 @@ const urlToCache = [
     "./assets/img/ui/signal.svg",
     "./assets/img/ui/thanks.svg",
     //icon
-    "./assets/img/icon/Icon-96.png",
+    "./assets/img/icon/Icon-144.png",
+    "./assets/img/icon/Icon-192.png",
     "./assets/img/icon/Icon-36.png",
+    "./assets/img/icon/Icon-48.png",
+    "./assets/img/icon/Icon-512.png",
+    "./assets/img/icon/Icon-72.png",
+    "./assets/img/icon/Icon-96.png",
 
     //data json
     "./assets/json/cristianoronaldo.json",
@@ -116,26 +122,86 @@ self.addEventListener("activate", function(event) {
 // });
 
 //default
-self.addEventListener("fetch", function(event) {
-    event.respondWith(
-        caches
-        .match(event.request, { cacheName: CACHE_NAME })
-        .then(function(response) {
-            if (response) {
-                console.log("sw offline:  ", response.url);
-                return response;
-            }
+// self.addEventListener("fetch", function(event) {
+//     event.respondWith(
+//         caches
+//         .match(event.request, { cacheName: CACHE_NAME })
+//         .then(function(response) {
+//             if (response) {
+//                 console.log("sw offline:  ", response.url);
+//                 return response;
+//             }
 
-            console.log(
-                "sw online:  ",
-                event.request.url
-            );
+//             console.log(
+//                 "sw online:  ",
+//                 event.request.url
+//             );
 
-            // caches.open(CACHE_NAME).then(function(cache){
-            //     return cache.add(event.request);
-            // })
+//             return fetch(event.request);
+//         })
+//     );
+// });
 
-            return fetch(event.request);
-        })
-    );
-});
+self.addEventListener('fetch', event => {
+    const api_url = 'https://api.football-data.org/v2/'
+    const img = '.jpg'
+    const svg = '.svg'
+
+    let uri = event.request.url
+    console.log(uri)
+
+    if(uri.indexOf(api_url) > -1){
+        event.respondWith(
+            caches
+            .match(event.request, { cacheName: CACHE_NAME })
+            .then(function(response) {
+                if (response) {
+                    console.log("sw offline:  ", response.url);
+                    return response;
+                }
+
+                console.log(
+                    "sw online:  ",
+                    event.request.url
+                );
+
+                return caches.open(CACHE_NAME).then(cache => {
+                    return fetch(event.request).then(response => {
+                        console.log(response)
+                        cache.put(event.request.url, response.clone())
+                        return response
+                    })
+                })
+            })
+        )
+    }else if(uri.indexOf(img) > -1 || uri.indexOf(svg) > -1){
+        event.respondWith(
+            caches
+            .match(event.request, { cacheName: CACHE_NAME })
+            .then(function(response) {
+                if (response) {
+                    console.log("sw img offline:  ", response.url);
+                    return response;
+                }
+
+                console.log(
+                    "sw img online:  ",
+                    event.request.url
+                );
+
+                return caches.open(CACHE_NAME).then(cache => {
+                    cache.add(uri)
+                    return fetch(uri)
+                })
+            })
+        )
+    }else{
+        event.respondWith(
+            caches.match(event.request, {
+                ignoreSearch: !0
+            }).then(response => {
+                return response || fetch(event.request)
+            })
+        )
+    }
+})
