@@ -2,6 +2,38 @@ body {
     overscroll-behavior-y: contain;
 }
 
+.scroll-to-top{
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+}
+
+.starred {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    color: #c2c2c2;
+}
+
+.starred.checked {
+    color: #ffd700;
+}
+
+.btn-back{
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+}
+
+.icon-club{
+    width: 8em !important;
+    height: auto;
+}
+
+.card-image.icon-club {
+    margin: 1em;
+}
+
 #toast-container {
     top: 10%;
     right: 10% !important;
@@ -202,8 +234,12 @@ body {
     .card.horizontal .card-image {
         max-width: 100% !important;
     }
-    .card.horizontal .card-image img {
+    .card.horizontal .card-image img.stadium-img {
         width: 100% !important;
+    }
+    .card-image.icon-club {
+        padding-top: 1.5em;
+        margin: auto;
     }
 }
 

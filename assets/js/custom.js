@@ -1,14 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
     var page = window.location.hash.substr(1);
-    console.log(page.split('/'));
+    let deep = page.split('/')
 
-    console.log(page);
-
-    if (page == '') {
-        page = 'home'
+    if(deep.length > 1 && deep[1] != '') {
+        //router
+        let first = deep[0]
+        switch(first){
+            case 'standings':
+                RouterStanding(deep[1])
+                break
+            default:
+                RouterError()
+        }
+    }else{
+        if (page == '') {
+            page = 'home'
+        }
+        route(page);
     }
-
-    route(page);
 
     setMaterialize()
 
@@ -18,25 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     colorPlateListener()
 
-    //feedbackListener()
 });
 
 const route = (page) => {
-
+   
     urlPage = "pages/" + page + ".html";
 
-    $.ajax({
-        method: 'get',
-        url: urlPage,
-        success: response => {
-            $('#body-content').html(response)
-        },
-        error: response => {
-            $('#body-content').html(response.status)
-        }
-    }).then(() => {
+    fetch(urlPage)
+    .then((res) => res.text() )
+    .then((res) => {
+        $('#body-content').html(res)
+    })
+    .catch(res=>{
+        $('#body-content').html(res.status)
+    })
+    .then(() => {
         M.Sidenav.getInstance($('.sidenav')).close();
-
+        console.log(page)
         switch (page) {
             case 'home':
                 $('.card > .card-action > a').each(function() {
@@ -88,6 +95,14 @@ const route = (page) => {
                     })
                 })
                 break
+            case 'standings':
+                    $('.standings > div > a').each((index, item)=>{
+                        let uri = $(item).attr('href').substr(11)
+                        $(item).click(()=>{
+                            RouterStanding(uri)
+                        })
+                    })
+                break
             default:
                 //nothing
         }
@@ -115,32 +130,12 @@ const player_info = player_name => {
     }).then($('#player_info').modal())
 }
 
-// const feedbackListener = () => {
-//     $('.feedback-send').click(() => {
-
-//         let email = $('#email').val()
-//         let message = $('#message').val()
-//         let container = $('#body-content')
-//         let thanks = `thanks`
-//         let errMessage = `no internet connection`
-
-//         $.ajax({
-//             method: 'get',
-//             url: 'https://api.kangkode.site/v1/feedback/give',
-//             success: res => {
-//                 container.html(thanks)
-//             },
-//             error: err => {
-//                 container.html(errMessage)
-//             }
-//         })
-//     })
-// }
-
 const colorPlateListener = () => {
+    getTheme()
     $('#color_plate > li > a').each(function() {
-        let color = $(this).attr('data-color')
-        switch (color) {
+        let datacolor = $(this).attr('data-color')
+        let color = ''
+        switch (datacolor) {
             case 'red':
                 color = 'red'
                 break
@@ -154,22 +149,27 @@ const colorPlateListener = () => {
                 color = 'blue darken-1'
         }
 
-        $(this).click(function() {
+        $(this).click(e => {
+            e.preventDefault()
             $('#nav').attr('class', color)
             $('#card-nav').attr('class', `card-panel ${color} rem-mt`)
+            $('.scroll-to-top').removeClass('red green grey blue darken-1 darken-4')
+            $('.scroll-to-top').addClass(color)
+            setTheme(datacolor)
         })
     })
 }
 
 const navListener = () => {
+    loadSidebar() //load name on index db
     var elems = document.querySelectorAll(".sidenav");
     M.Sidenav.init(elems);
     $('.sidenav > li > a, .topnav > li > a').each(function() {
         let loaded = $(this).attr('href').substr(1)
 
         $(this).click(function() {
+            M.Sidenav.getInstance($('.sidenav')).close();
             route(loaded)
-                //M.Sidenav.getInstance($('.sidenav')).close();
         })
     });
 }
@@ -188,3 +188,182 @@ const setMaterialize = () => {
     $('.dropdown-trigger').dropdown()
     $('.tooltipped').tooltip()
 }
+
+const RouterStanding = async (params) => {
+
+    let loading = `<div class="col s3 l6 progress">
+                    <div class="indeterminate"></div>
+                </div>`
+
+    $('#body-content').html(loading)
+
+
+    const api = 'https://api.football-data.org/v2/competitions/[team]/standings'
+    const token = '65906dfb1c20470e85c965142a97d3ba'
+    const options = {
+        method: 'get',
+        headers: {
+            'X-Auth-Token': token
+        }
+    }
+    const url = {
+        bundesliga: 2002,
+        laliga: 2014,
+        league1: 2015,
+        premier: 2021,
+        seriea: 2019
+    }
+
+    let newapi = api.replace('[team]', url[params])
+
+    try{
+        let data = await fetch(newapi, options)
+              
+        let json = await data.json()
+        let result = await json.standings[0]
+        let table = await result.table
+        console.log(result)
+
+        //make empty
+        let content = ``
+
+        let starred = await getStarredTeam()
+
+        console.log(starred[0])
+
+        //id starred team in array
+        table.forEach(item => {
+            //if item.team.id in array of id starred, checked is true
+            let checked = ''
+
+            for(let i in starred){
+                if(starred[i].team_id == item.team.id){
+                    checked = 'checked'
+                    break
+                }
+            }
+
+            content += `
+            <div class="col s12 m7">
+            <h4 class="header">${item.position+". "+item.team.name}</h4>
+            <div class="card horizontal">
+                <a href="#!" data-id="${item.team.id}" data-name="${item.team.name}" class="starred ${checked}"><i class="small material-icons circle">grade</i></a>
+              <div class="card-image icon-club">
+                <img alt="club ${item.team.name}" onerror="this.src='./assets/img/icon/Icon-144.png'" src="./assets/img/icon/Icon-144.png" class="icon-club lazyload" data-src="${item.team.crestUrl.replace(/^http:\/\//i, 'https://')}">
+              </div>
+              <div class="card-stacked">
+                <div class="card-content">
+                  <ul class="collection">
+                    <li class="collection-item avatar">
+                      <i class="material-icons circle blue">event_available</i>
+                      <span class="title">Played Game</span>
+                      <p><b>${item.playedGames}</b> <br>
+                         Second Line
+                      </p>
+                    </li>
+                    <li class="collection-item avatar">
+                      <i class="material-icons circle green">thumb_up</i>
+                      <span class="title">Won</span>
+                      <p><b>${item.won}</b> <br>
+                         Second Line
+                      </p>
+                    </li>
+                    <li class="collection-item avatar">
+                      <i class="material-icons circle">pause</i>
+                      <span class="title">Draw</span>
+                      <p><b>${item.draw}</b> <br>
+                         Second Line
+                      </p>
+                    </li>
+                    <li class="collection-item avatar">
+                      <i class="material-icons circle red">thumb_down</i>
+                      <span class="title">Lost</span>
+                      <p><b>${item.lost}</b> <br>
+                         Second Line
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+            `
+        })
+
+        let defaultTheme = getDefaultTheme().then(color=>{
+            content += `          
+                <a class="btn-floating waves-effect waves-light btn-large ${color} btn-back"><i class="material-icons circle">arrow_back</i></a>
+            <div class="floating-bottom"> 
+                <a class="btn-floating btn-large waves-effect waves-light ${color} scroll-to-top"><i class="material-icons">expand_less</i></a>
+            </div>
+            `
+            document.querySelector('#body-content').innerHTML = content
+        }).then(() => {
+            //event when starred
+
+            $('.starred').each(function(){
+                let elem = $(this)
+                let id = elem.data('id')
+                let name = elem.data('name')
+
+                elem.click(function(e){
+                    e.preventDefault()
+                    setStarredTeam(id,name)
+                    let isStarred = elem.hasClass('checked')
+
+                    if(!isStarred){
+                        console.log("starred")
+                        elem.addClass('checked')
+                    }else{
+                        console.log('unstar')
+                        elem.removeClass('checked')   
+                    }
+
+                })
+            })
+
+            // event when scroll to top clicked
+            $('.floating-bottom').click(event=>{
+                event.preventDefault()
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                return false;
+            })
+
+            //hide button scroll when first loaded
+            $('.scroll-to-top').hide()
+
+            //event hide/show when scroll
+            window.onscroll = function(){
+                if(window.scrollY >= 500){
+                    $('.scroll-to-top').fadeIn('500')
+                }else{
+                    $('.scroll-to-top').fadeOut('500')
+                }
+            };
+        })
+
+        //content += `<a class="btn-floating btn-large waves-effect waves-light ${thecolor} scroll-to-top"><i class="material-icons">expand_less</i></a>`
+    }catch(err){
+        console.log("errrorrrrr")
+        RouterError(RouterStanding, params)
+    }
+    
+}
+
+const RouterError = (callback, params) => {
+    let errMessage = `<div class="s12 l12 center notif">
+                                    <div><img class="responsive-img signal" src="./assets/img/ui/signal.svg"></div>
+                                    <div><h3>no network</h3></div>
+                                    <div><span>Please check your network connectivity</span></div>
+                                    <div><a href="" class="waves-effect reload"><i class="material-icons font-red right-align">refresh</i></a></di>
+                                </div>`
+    $('#body-content').html(errMessage)
+    $('.reload').click((event)=>{
+        event.preventDefault()
+        callback(params)
+    })
+    console.log("no internet connection")
+}
+
+//key
+//65906dfb1c20470e85c965142a97d3ba
