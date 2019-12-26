@@ -15,7 +15,7 @@ const urlToCache = [
 
     //pages
     "./pages/home.html",
-    "./pages/listClub.html",
+    "./pages/starredTeam.html",
     "./pages/standings.html",
     "./pages/schedule.html",
     "./pages/stadium.html",
@@ -28,35 +28,35 @@ const urlToCache = [
 
     //image
     "./assets/img/icon-512x512.png",
-        //player
-        "./assets/img/player/cr7.jpg",
-        "./assets/img/player/messi.jpg",
-        "./assets/img/player/neymar.jpg",
-        //stadium
-        "./assets/img/stadium/camp_nou.jpg",
-        "./assets/img/stadium/santiago_bernabeu.jpg",
-        "./assets/img/stadium/parc_des_princes.jpg",
-        //club
-        "./assets/img/club/english/Arsenal-FC-icon.png",
-        "./assets/img/club/english/Chelsea-FC-icon.png",
-        "./assets/img/club/english/Tottenham-Hotspur-icon.png",
-        "./assets/img/club/spain/Athletic-Bilbao-icon.png",
-        "./assets/img/club/spain/Atletico-Madrid-icon.png",
-        "./assets/img/club/spain/FC-Barcelona-icon.png",
-        "./assets/img/club/spain/Real-Madrid-icon.png",
-        "./assets/img/club/spain/Valencia-icon.png",
-        //banner
-        "./assets/img/club/banner/bundes.jpg",
-        "./assets/img/club/banner/laliga.jpg",
-        "./assets/img/club/banner/league1.jpg",
-        "./assets/img/club/banner/premier.jpg",
-        "./assets/img/club/banner/seriea.jpg",
-        //ui
-        "./assets/img/ui/signal.svg",
-        "./assets/img/ui/thanks.svg",
-        //icon
-        "./assets/img/icon/Icon-96.png",
-        "./assets/img/icon/Icon-36.png",
+    //player
+    "./assets/img/player/cr7.jpg",
+    "./assets/img/player/messi.jpg",
+    "./assets/img/player/neymar.jpg",
+    //stadium
+    "./assets/img/stadium/camp_nou.jpg",
+    "./assets/img/stadium/santiago_bernabeu.jpg",
+    "./assets/img/stadium/parc_des_princes.jpg",
+    //club
+    "./assets/img/club/english/Arsenal-FC-icon.png",
+    "./assets/img/club/english/Chelsea-FC-icon.png",
+    "./assets/img/club/english/Tottenham-Hotspur-icon.png",
+    "./assets/img/club/spain/Athletic-Bilbao-icon.png",
+    "./assets/img/club/spain/Atletico-Madrid-icon.png",
+    "./assets/img/club/spain/FC-Barcelona-icon.png",
+    "./assets/img/club/spain/Real-Madrid-icon.png",
+    "./assets/img/club/spain/Valencia-icon.png",
+    //banner
+    "./assets/img/club/banner/bundes.jpg",
+    "./assets/img/club/banner/laliga.jpg",
+    "./assets/img/club/banner/league1.jpg",
+    "./assets/img/club/banner/premier.jpg",
+    "./assets/img/club/banner/seriea.jpg",
+    //ui
+    "./assets/img/ui/signal.svg",
+    "./assets/img/ui/thanks.svg",
+    //icon
+    "./assets/img/icon/Icon-96.png",
+    "./assets/img/icon/Icon-36.png",
 
     //data json
     "./assets/json/cristianoronaldo.json",
@@ -72,9 +72,9 @@ const urlToCache = [
 
 ];
 
-self.addEventListener('install', function(event){
+self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(function(cache){
+        caches.open(CACHE_NAME).then(function(cache) {
             return cache.addAll(urlToCache);
         })
     );
@@ -83,14 +83,14 @@ self.addEventListener('install', function(event){
 self.addEventListener("activate", function(event) {
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
-        return Promise.all(
-            cacheNames.map(function(cacheName) {
-            if (cacheName != CACHE_NAME) {
-                console.log("ServiceWorker: cache " + cacheName + " dihapus");
-                return caches.delete(cacheName);
-            }
-            })
-        );
+            return Promise.all(
+                cacheNames.map(function(cacheName) {
+                    if (cacheName != CACHE_NAME) {
+                        console.log("ServiceWorker: cache " + cacheName + " dihapus");
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
         })
     );
 });
@@ -105,7 +105,7 @@ self.addEventListener("activate", function(event) {
 //             console.log("sw offline:  ", response.url);
 //             return response;
 //           }
-   
+
 //           console.log(
 //             "sw online:  ",
 //             event.request.url
@@ -118,26 +118,24 @@ self.addEventListener("activate", function(event) {
 //default
 self.addEventListener("fetch", function(event) {
     event.respondWith(
-      caches
+        caches
         .match(event.request, { cacheName: CACHE_NAME })
         .then(function(response) {
-          if (response) {
-            console.log("sw offline:  ", response.url);
-            return response;
-          }
-   
-          console.log(
-            "sw online:  ",
-            event.request.url
-          );
+            if (response) {
+                console.log("sw offline:  ", response.url);
+                return response;
+            }
+
+            console.log(
+                "sw online:  ",
+                event.request.url
+            );
 
             // caches.open(CACHE_NAME).then(function(cache){
             //     return cache.add(event.request);
             // })
 
-          return fetch(event.request);
+            return fetch(event.request);
         })
     );
 });
-
-  

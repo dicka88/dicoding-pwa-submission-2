@@ -12,7 +12,9 @@
             account.createIndex('name', 'name')
             account.createIndex('gender', 'gender')
             account.createIndex('theme', 'theme')
+        }
 
+        if (!db.objectStoreNames.contains('starredTeam')) {
             //db starred account
             const starredTeam = db.createObjectStore('starredTeam', {
                 keyPath: 'team_id',
@@ -21,7 +23,6 @@
 
             starredTeam.createIndex('team_id', 'id_team')
             starredTeam.createIndex('team_name', 'team_name')
-
         }
 
     })
@@ -33,7 +34,7 @@
 
         let isOwn = await stAccount.get(1)
 
-        if(isOwn == undefined){
+        if (isOwn == undefined) {
             let params = {
                 id: 1,
                 nickname: '',
@@ -133,7 +134,7 @@
 
         }).then(res => {
             loadSidebar()
-            console.log("theme set to "+color);
+            console.log("theme set to " + color);
         })
     }
 
@@ -145,7 +146,7 @@
             let theme = st.get(1)
             return theme
         }).then(data => {
-            if(data.theme != ''){
+            if (data.theme != '') {
                 //set theme
 
                 switch (data.theme) {
@@ -166,6 +167,10 @@
                 $('#card-nav').attr('class', `card-panel ${color} rem-mt`)
                 $('.scroll-to-top').removeClass('red green grey blue darken-1 darken-4')
                 $('.scroll-to-top').addClass(color)
+                $('.red, .green, .grey.darken-4, .blue.darken-1').each(function() {
+                    $(this).removeClass('red green grey blue darken-1 darken-4')
+                    $(this).addClass(color)
+                })
             }
         })
     }
@@ -179,7 +184,7 @@
                 let theme = st.get(1)
                 return theme
             }).then(data => {
-                if(data.theme != ''){
+                if (data.theme != '') {
                     switch (data.theme) {
                         case 'red':
                             color = 'red'
@@ -211,15 +216,16 @@
 
             const isExist = await st.get(id)
 
-            if(isExist == undefined) {
+            if (isExist == undefined) {
                 st.put(data)
-                return name+" has been starred"
-            }else{
+                return name + " has been starred"
+            } else {
                 st.delete(id)
-                return name+" has been unstarred"
+                return name + " has been unstarred"
             }
 
         }).then(res => {
+            M.toast({ html: `${res}`, classes: 'rounded' });
             console.log(res)
         })
     }

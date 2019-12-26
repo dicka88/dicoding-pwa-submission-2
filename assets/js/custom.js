@@ -2,17 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
     var page = window.location.hash.substr(1);
     let deep = page.split('/')
 
-    if(deep.length > 1 && deep[1] != '') {
+    if (deep.length > 1 && deep[1] != '') {
         //router
         let first = deep[0]
-        switch(first){
+        switch (first) {
             case 'standings':
                 RouterStanding(deep[1])
                 break
             default:
                 RouterError()
         }
-    }else{
+    } else {
         if (page == '') {
             page = 'home'
         }
@@ -30,41 +30,42 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const route = (page) => {
-   
+
     urlPage = "pages/" + page + ".html";
 
     fetch(urlPage)
-    .then((res) => res.text() )
-    .then((res) => {
-        $('#body-content').html(res)
-    })
-    .catch(res=>{
-        $('#body-content').html(res.status)
-    })
-    .then(() => {
-        M.Sidenav.getInstance($('.sidenav')).close();
-        console.log(page)
-        switch (page) {
-            case 'home':
-                $('.card > .card-action > a').each(function() {
+        .then((res) => res.text())
+        .then((res) => {
+            $('#body-content').html(res)
+        })
+        .catch(res => {
+            $('#body-content').html(res.status)
+        })
+        .then(() => {
+            getTheme()
+            M.Sidenav.getInstance($('.sidenav')).close();
+            console.log(page)
+            switch (page) {
+                case 'home':
+                    $('.card > .card-action > a').each(function() {
 
-                    let player_name = $(this).attr('data-href').substr(8)
-                    $(this).click(function() {
-                        player_info(player_name)
+                        let player_name = $(this).attr('data-href').substr(8)
+                        $(this).click(function() {
+                            player_info(player_name)
+                        })
                     })
-                })
-                break
+                    break
 
-            case 'feedback':
-                $('.feedback-send').click(() => {
+                case 'feedback':
+                    $('.feedback-send').click(() => {
 
-                    let email = $('#email').val()
-                    let message = $('#message').val()
-                    let container = $('#body-content')
-                    let loading = `<div class="progress">
+                        let email = $('#email').val()
+                        let message = $('#message').val()
+                        let container = $('#body-content')
+                        let loading = `<div class="progress">
                                         <div class="indeterminate"></div>
                                     </div>`
-                    let thanks = `<div class="s12 l12 center notif">
+                        let thanks = `<div class="s12 l12 center notif">
                                         <div><img class="responsive-img signal" src="./assets/img/ui/thanks.svg"></div>
                                         <div><h3>Thank you :)</h3></div>
                                         <div><span>your feedback supporting me</span></div><br><br>
@@ -72,41 +73,41 @@ const route = (page) => {
                                             <button class="btn waves-effect waves-light round" onclick="route('home')"><i class="material-icons">arrow_back</i></button>
                                         </div>
                                     </div>`
-                    let errMessage = `<div class="s12 l12 center notif">
+                        let errMessage = `<div class="s12 l12 center notif">
                                         <div><img class="responsive-img signal" src="./assets/img/ui/signal.svg"></div>
                                         <div><h3>no network</h3></div>
                                         <div><span>Please check your network connectivity</span></div>
                                     </div>`
 
-                    container.html(loading)
-                    $.ajax({
-                        method: 'post',
-                        url: 'https://api.kangkode.site/v1/feedback_send',
-                        data: {
-                            email: email,
-                            message: message
-                        },
-                        success: res => {
-                            container.html(thanks)
-                        },
-                        error: function(xhr) {
-                            container.html(errMessage)
-                        }
+                        container.html(loading)
+                        $.ajax({
+                            method: 'post',
+                            url: 'https://api.kangkode.site/v1/feedback_send',
+                            data: {
+                                email: email,
+                                message: message
+                            },
+                            success: res => {
+                                container.html(thanks)
+                            },
+                            error: function(xhr) {
+                                container.html(errMessage)
+                            }
+                        })
                     })
-                })
-                break
-            case 'standings':
-                    $('.standings > div > a').each((index, item)=>{
+                    break
+                case 'standings':
+                    $('.standings > div > a').each((index, item) => {
                         let uri = $(item).attr('href').substr(11)
-                        $(item).click(()=>{
+                        $(item).click(() => {
                             RouterStanding(uri)
                         })
                     })
-                break
-            default:
-                //nothing
-        }
-    })
+                    break
+                default:
+                    //nothing
+            }
+        })
 }
 
 const player_info = player_name => {
@@ -153,8 +154,12 @@ const colorPlateListener = () => {
             e.preventDefault()
             $('#nav').attr('class', color)
             $('#card-nav').attr('class', `card-panel ${color} rem-mt`)
-            $('.scroll-to-top').removeClass('red green grey blue darken-1 darken-4')
-            $('.scroll-to-top').addClass(color)
+                // $('.scroll-to-top, .btn-back').removeClass('red green grey blue darken-1 darken-4')
+                // $('.scroll-to-top, .btn-back').addClass(color)
+            $('.red, .green, .grey.darken-4, .blue.darken-1').each(function() {
+                $(this).removeClass('red green grey blue darken-1 darken-4')
+                $(this).addClass(color)
+            })
             setTheme(datacolor)
         })
     })
@@ -189,7 +194,7 @@ const setMaterialize = () => {
     $('.tooltipped').tooltip()
 }
 
-const RouterStanding = async (params) => {
+const RouterStanding = async(params) => {
 
     let loading = `<div class="col s3 l6 progress">
                     <div class="indeterminate"></div>
@@ -216,9 +221,9 @@ const RouterStanding = async (params) => {
 
     let newapi = api.replace('[team]', url[params])
 
-    try{
+    try {
         let data = await fetch(newapi, options)
-              
+
         let json = await data.json()
         let result = await json.standings[0]
         let table = await result.table
@@ -229,15 +234,13 @@ const RouterStanding = async (params) => {
 
         let starred = await getStarredTeam()
 
-        console.log(starred[0])
-
         //id starred team in array
         table.forEach(item => {
             //if item.team.id in array of id starred, checked is true
             let checked = ''
 
-            for(let i in starred){
-                if(starred[i].team_id == item.team.id){
+            for (let i in starred) {
+                if (starred[i].team_id == item.team.id) {
                     checked = 'checked'
                     break
                 }
@@ -290,7 +293,7 @@ const RouterStanding = async (params) => {
             `
         })
 
-        let defaultTheme = getDefaultTheme().then(color=>{
+        let defaultTheme = getDefaultTheme().then(color => {
             content += `          
                 <a class="btn-floating waves-effect waves-light btn-large ${color} btn-back"><i class="material-icons circle">arrow_back</i></a>
             <div class="floating-bottom"> 
@@ -300,30 +303,32 @@ const RouterStanding = async (params) => {
             document.querySelector('#body-content').innerHTML = content
         }).then(() => {
             //event when starred
-
-            $('.starred').each(function(){
+            $('.starred').each(function() {
                 let elem = $(this)
                 let id = elem.data('id')
                 let name = elem.data('name')
 
-                elem.click(function(e){
+                elem.click(function(e) {
                     e.preventDefault()
-                    setStarredTeam(id,name)
+                    setStarredTeam(id, name)
                     let isStarred = elem.hasClass('checked')
 
-                    if(!isStarred){
-                        console.log("starred")
+                    if (!isStarred) {
                         elem.addClass('checked')
-                    }else{
-                        console.log('unstar')
-                        elem.removeClass('checked')   
+                    } else {
+                        elem.removeClass('checked')
                     }
 
                 })
             })
 
+            //event when btn back clicked
+            $('.btn-back').click(() => {
+                route("standings")
+            })
+
             // event when scroll to top clicked
-            $('.floating-bottom').click(event=>{
+            $('.floating-bottom').click(event => {
                 event.preventDefault()
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 return false;
@@ -333,21 +338,21 @@ const RouterStanding = async (params) => {
             $('.scroll-to-top').hide()
 
             //event hide/show when scroll
-            window.onscroll = function(){
-                if(window.scrollY >= 500){
+            window.onscroll = function() {
+                if (window.scrollY >= 500) {
                     $('.scroll-to-top').fadeIn('500')
-                }else{
+                } else {
                     $('.scroll-to-top').fadeOut('500')
                 }
             };
         })
 
         //content += `<a class="btn-floating btn-large waves-effect waves-light ${thecolor} scroll-to-top"><i class="material-icons">expand_less</i></a>`
-    }catch(err){
+    } catch (err) {
         console.log("errrorrrrr")
         RouterError(RouterStanding, params)
     }
-    
+
 }
 
 const RouterError = (callback, params) => {
@@ -358,7 +363,7 @@ const RouterError = (callback, params) => {
                                     <div><a href="" class="waves-effect reload"><i class="material-icons font-red right-align">refresh</i></a></di>
                                 </div>`
     $('#body-content').html(errMessage)
-    $('.reload').click((event)=>{
+    $('.reload').click((event) => {
         event.preventDefault()
         callback(params)
     })
