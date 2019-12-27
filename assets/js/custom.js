@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (page == '') {
             page = 'home'
         }
+        page = page.split('?')[0]
+        console.log(page)
         route(page);
     }
 
@@ -44,7 +46,6 @@ const route = (page) => {
         .then(() => {
             getTheme()
             M.Sidenav.getInstance($('.sidenav')).close();
-            console.log(page)
             switch (page) {
                 case 'home':
                     $('.card > .card-action > a').each(function() {

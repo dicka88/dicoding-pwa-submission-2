@@ -1,0 +1,49 @@
+<div class="root">
+	
+</div>
+<script>
+	const root 		 = $('.root')
+	const url_params = window.location.href
+	//const team_id 	 = url_params.get("id")
+
+	let params = url_params.split('?')[1]
+	let new_params = params.split('&')[0]
+	let team_id = new_params.split('=')[1]
+	
+	const getTeamById = async ()=>{
+		console.log(team_id)
+		if(team_id == null){
+			//show home of team page
+			root.html(`Gaada parameter`)
+		}else{
+			let loading = `<div class="progress">
+                                        <div class="indeterminate red"></div>
+                                    </div>`
+            root.html(loading)
+
+			//show detail team
+			const api = 'https://apia.football-data.org/v2/teams/[team_id]'
+		    const token = '65906dfb1c20470e85c965142a97d3ba'
+		    const options = {
+		        method: 'get',
+		        headers: {
+		            'X-Auth-Token': token
+		        }
+		    }
+
+		    api_team = api.replace('[team_id]', team_id)
+
+		    try{
+		  		let getAPi = await fetch(api_team, options)
+		    	let json   = await getAPi.json()
+		    	let data   = await json
+
+		    	console.log(data)  	
+		    }catch(e){
+		    	//RouterError()
+			}
+		}
+	}
+	getTeamById()
+
+</script>
