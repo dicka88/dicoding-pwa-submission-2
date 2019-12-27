@@ -6,10 +6,10 @@ const vapidKeys = {
 }
 
 const pushSubscription = {
-	endpoint: 'https://fcm.googleapis.com/fcm/send/eW3LMlMl9bw:APA91bGWUVGKo7q2T9DY_T3AeeIcr2IM3RzFZ0j3ZoOmKHXNyxIxgQBe7oOHq9Gmjb4zwCOB9WyCBnOZQlV9DzRI_VK0XdkQ0TUFLopmqAmt2NphhAJqpdGpaC7ugYn-5RB-_NgbDzHS',
+	endpoint: 'https://fcm.googleapis.com/fcm/send/eZc7H9-LCVY:APA91bHzY3P6eZcTtLzGPWZKJne2mf_0SA0WmwuglxqU2-VssMrP0HlA5TkZXmpqrPRC-jzQPN8D6uwsb2TkG4OwJVavmxkrx8aZAfVtih5_LYFzEgoTsI18NXA_dc-13wsAJzJ57bNq',
 	keys: {
-		p256dh: 'BP/NyNHaGI3cR5aJFG/t92XQmqEZOnU3/2+wUSpbXjD1XHvq3LWCeFmJiUntcudbbS+OrPR3cUctQHN2ACkbE4w=',
-		auth: 'ql6lv8BznsO3ZdvgE/P3iA=='
+		p256dh: 'BD7CCoJ/gLuJ4vp/wE1uLb2Yo1CjGWqVUExWzcwwXBBbMAU0ur41j6813CnKTRKKtipjMHMUTeddqc4esThGik4=',
+		auth: 'xhvLNppUfEnUURI8S1Yl3g=='
 	}
 }
 
