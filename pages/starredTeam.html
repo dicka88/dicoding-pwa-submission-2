@@ -59,11 +59,11 @@
                         card.hide("slow")
 
                         let doRemove = setTimeout(()=>{
+                            setStarredTeam(id, data)
+                            card.remove()
                             if ($('div.savedTeam').length == 0) {
                                 routeEmptyStarred()
                             }
-                            setStarredTeam(id, data)
-                            card.remove()
                         },3000)
 
                         $('.toast-action').click(() => {
