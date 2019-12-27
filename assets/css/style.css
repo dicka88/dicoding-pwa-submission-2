@@ -83,7 +83,9 @@ body {
 }
 
 .progress {
-    margin-top: 300px;
+    margin: auto !important;
+    top: 20em;
+    width: 50% !important;
 }
 
 .versus {

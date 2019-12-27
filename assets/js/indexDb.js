@@ -204,24 +204,25 @@
         })
     }
 
-    const setStarredTeam = (id, name) => {
+    const setStarredTeam = (id, data) => {
         indexDb.then(async db => {
             const tx = db.transaction('starredTeam', 'readwrite')
             const st = tx.objectStore('starredTeam')
 
-            let data = {
+            let team = {
                 team_id: id,
-                team_name: name
+                team_name: data.name,
+                team_path_icon: data.path_img
             }
 
             const isExist = await st.get(id)
 
             if (isExist == undefined) {
-                st.put(data)
-                return name + " has been starred"
+                st.put(team)
+                return data.name + " has been starred"
             } else {
                 st.delete(id)
-                return name + " has been unstarred"
+                return data.name + " has been unstarred"
             }
 
         }).then(res => {

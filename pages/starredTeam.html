@@ -1,15 +1,63 @@
-<div class="s12 l6">
-	<img class="responsive-img radius" src="./assets/img/club/banner/bundes.jpg">
-</div>
-<div class="s12 l6">
-	<img class="responsive-img radius" src="./assets/img/club/banner/laliga.jpg">
-</div>
-<div class="s12 l6">
-	<img class="responsive-img radius" src="./assets/img/club/banner/league1.jpg">
-</div>
-<div class="s12 l6">
-	<img class="responsive-img radius" src="./assets/img/club/banner/premier.jpg">
-</div>
-<div class="s12 l6">
-	<img class="responsive-img radius" src="./assets/img/club/banner/seriea.jpg">
-</div>
+<script>
+    getStarredTeam().then(res => {
+        let root = $('#body-content')
+        if (res.length == 0) {
+            routeEmptyStarred()
+        } else {
+            let body = `<div><center><h4>My Favorite Teams</h4></center></div>`
+            res.forEach(item => {
+                body += `
+					<div class="card horizontal savedTeam">
+						<div class="col s12 m7">
+							<div class="card horizontal">
+								<a href="#!" data-id="${item.team_id}" data-name="${item.team_name}" class="starred checked"><i class="small material-icons circle">grade</i></a>
+								<div class="card-image icon-club">
+									<img alt="club ${item.team_path_icon}" onerror="this.src='./assets/img/icon/Icon-144.png'" src="./assets/img/icon/Icon-144.png" class="icon-club lazyload" data-src="${item.team_path_icon.replace(/^http:\/\//i, 'https://')}">
+								</div>
+								<div class="card-stacked">
+									<div class="card-content">
+										${item.team_name}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				`
+            })
+
+            root.html(body)
+
+            $('.starred').each(function() {
+                let elem = $(this)
+                let id = elem.data('id')
+                let name = elem.data('name')
+                let path_img = elem.data('url')
+
+                let data = {
+                    id,
+                    name,
+                    path_img
+                }
+
+                elem.click(function(e) {
+                    e.preventDefault()
+                    setStarredTeam(id, data)
+                    let isStarred = elem.hasClass('checked')
+
+                    if (!isStarred) {
+                        elem.addClass('checked')
+                    } else {
+                        let card = elem.closest('div.savedTeam')
+                        card.remove()
+                        elem.removeClass('checked')
+
+                        if (card.length == 0) {
+                            routeEmptyStarred()
+                        }
+                    }
+
+                })
+            })
+        }
+    })
+</script>

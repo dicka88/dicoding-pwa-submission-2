@@ -55,6 +55,7 @@ const urlToCache = [
     //ui
     "./assets/img/ui/signal.svg",
     "./assets/img/ui/thanks.svg",
+    "./assets/img/ui/fans.svg",
     //icon
     "./assets/img/icon/Icon-144.png",
     "./assets/img/icon/Icon-192.png",
@@ -146,11 +147,12 @@ self.addEventListener('fetch', event => {
     const api_url = 'https://api.football-data.org/v2/'
     const img = '.jpg'
     const svg = '.svg'
+    const png = '.png'
 
     let uri = event.request.url
     console.log(uri)
 
-    if(uri.indexOf(api_url) > -1){
+    if (uri.indexOf(api_url) > -1) {
         event.respondWith(
             caches
             .match(event.request, { cacheName: CACHE_NAME })
@@ -174,7 +176,7 @@ self.addEventListener('fetch', event => {
                 })
             })
         )
-    }else if(uri.indexOf(img) > -1 || uri.indexOf(svg) > -1){
+    } else if (uri.indexOf(img) > -1 || uri.indexOf(svg) > -1 || uri.indexOf(svg) > -1) {
         event.respondWith(
             caches
             .match(event.request, { cacheName: CACHE_NAME })
@@ -195,7 +197,7 @@ self.addEventListener('fetch', event => {
                 })
             })
         )
-    }else{
+    } else {
         event.respondWith(
             caches.match(event.request, {
                 ignoreSearch: !0

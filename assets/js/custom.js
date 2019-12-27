@@ -196,12 +196,12 @@ const setMaterialize = () => {
 
 const RouterStanding = async(params) => {
 
-    let loading = `<div class="col s3 l6 progress">
-                    <div class="indeterminate"></div>
-                </div>`
+    let loading = `<div class="col s3 l3 progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                    `
 
     $('#body-content').html(loading)
-
 
     const api = 'https://api.football-data.org/v2/competitions/[team]/standings'
     const token = '65906dfb1c20470e85c965142a97d3ba'
@@ -250,7 +250,7 @@ const RouterStanding = async(params) => {
             <div class="col s12 m7">
             <h4 class="header">${item.position+". "+item.team.name}</h4>
             <div class="card horizontal">
-                <a href="#!" data-id="${item.team.id}" data-name="${item.team.name}" class="starred ${checked}"><i class="small material-icons circle">grade</i></a>
+                <a href="#!" data-id="${item.team.id}" data-url="${item.team.crestUrl.replace(/^http:\/\//i, 'https://')}" data-name="${item.team.name}" class="starred ${checked}"><i class="small material-icons circle">grade</i></a>
               <div class="card-image icon-club">
                 <img alt="club ${item.team.name}" onerror="this.src='./assets/img/icon/Icon-144.png'" src="./assets/img/icon/Icon-144.png" class="icon-club lazyload" data-src="${item.team.crestUrl.replace(/^http:\/\//i, 'https://')}">
               </div>
@@ -260,29 +260,27 @@ const RouterStanding = async(params) => {
                     <li class="collection-item avatar">
                       <i class="material-icons circle blue">event_available</i>
                       <span class="title">Played Game</span>
-                      <p><b>${item.playedGames}</b> <br>
-                         Second Line
+                      <p>
+                        <b>${item.playedGames}</b>
                       </p>
                     </li>
                     <li class="collection-item avatar">
                       <i class="material-icons circle green">thumb_up</i>
                       <span class="title">Won</span>
-                      <p><b>${item.won}</b> <br>
-                         Second Line
+                      <p>
+                        <b>${item.won}</b>
                       </p>
                     </li>
                     <li class="collection-item avatar">
                       <i class="material-icons circle">pause</i>
                       <span class="title">Draw</span>
                       <p><b>${item.draw}</b> <br>
-                         Second Line
                       </p>
                     </li>
                     <li class="collection-item avatar">
                       <i class="material-icons circle red">thumb_down</i>
                       <span class="title">Lost</span>
                       <p><b>${item.lost}</b> <br>
-                         Second Line
                       </p>
                     </li>
                   </ul>
@@ -307,10 +305,17 @@ const RouterStanding = async(params) => {
                 let elem = $(this)
                 let id = elem.data('id')
                 let name = elem.data('name')
+                let path_img = elem.data('url')
+
+                let data = {
+                    id,
+                    name,
+                    path_img
+                }
 
                 elem.click(function(e) {
                     e.preventDefault()
-                    setStarredTeam(id, name)
+                    setStarredTeam(id, data)
                     let isStarred = elem.hasClass('checked')
 
                     if (!isStarred) {
@@ -344,10 +349,8 @@ const RouterStanding = async(params) => {
                 } else {
                     $('.scroll-to-top').fadeOut('500')
                 }
-            };
+            }
         })
-
-        //content += `<a class="btn-floating btn-large waves-effect waves-light ${thecolor} scroll-to-top"><i class="material-icons">expand_less</i></a>`
     } catch (err) {
         console.log("errrorrrrr")
         RouterError(RouterStanding, params)
@@ -368,6 +371,16 @@ const RouterError = (callback, params) => {
         callback(params)
     })
     console.log("no internet connection")
+}
+
+const routeEmptyStarred = () => {
+    let emptyMess = `
+        <div class="s12 l12 center notif">
+            <div><img class="responsive-img signal" src="./assets/img/ui/fans.svg"></div>
+            <div><h4>0 Team Favorite</h4></div>
+        </div>
+    `
+    $('#body-content').html(emptyMess)
 }
 
 //key
