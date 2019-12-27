@@ -1,6 +1,9 @@
+<div class="root">
+</div>
+
 <script>
     getStarredTeam().then(res => {
-        let root = $('#body-content')
+        let root = $('.root')
         if (res.length == 0) {
             routeEmptyStarred()
         } else {
@@ -55,9 +58,12 @@
                         let card = elem.closest('div.savedTeam')
                         card.hide("slow")
 
-                        // elem.removeClass('checked')
                         let doRemove = setTimeout(()=>{
+                            if ($('div.savedTeam').length == 0) {
+                                routeEmptyStarred()
+                            }
                             setStarredTeam(id, data)
+                            card.remove()
                         },3000)
 
                         $('.toast-action').click(() => {
@@ -66,9 +72,6 @@
                              M.Toast.dismissAll();
                         })
 
-                        if (card.length == 0) {
-                            routeEmptyStarred()
-                        }
                     }
 
                 })
