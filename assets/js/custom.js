@@ -318,11 +318,16 @@ const RouterStanding = async(params) => {
                     setStarredTeam(id, data)
                     let isStarred = elem.hasClass('checked')
 
+                    let message = ''
                     if (!isStarred) {
+                        message = data.name + " has been starred"
                         elem.addClass('checked')
                     } else {
+                        message = data.name + " has been unstarred"
                         elem.removeClass('checked')
                     }
+
+                    M.toast({ html: message, classes: 'rounded', displayLength: 1000 });
 
                 })
             })
@@ -377,7 +382,8 @@ const routeEmptyStarred = () => {
     let emptyMess = `
         <div class="s12 l12 center notif">
             <div><img class="responsive-img signal" src="./assets/img/ui/fans.svg"></div>
-            <div><h4>0 Team Favorite</h4></div>
+            <div><h4>Nothing Fav Team</h4></div>
+            <div>have you a nice day</div>
         </div>
     `
     $('#body-content').html(emptyMess)

@@ -8,15 +8,15 @@
             res.forEach(item => {
                 body += `
 					<div class="card horizontal savedTeam">
-						<div class="col s12 m7">
+						<div class="col s12 mt-3">
 							<div class="card horizontal">
 								<a href="#!" data-id="${item.team_id}" data-name="${item.team_name}" class="starred checked"><i class="small material-icons circle">grade</i></a>
 								<div class="card-image icon-club">
 									<img alt="club ${item.team_path_icon}" onerror="this.src='./assets/img/icon/Icon-144.png'" src="./assets/img/icon/Icon-144.png" class="icon-club lazyload" data-src="${item.team_path_icon.replace(/^http:\/\//i, 'https://')}">
 								</div>
 								<div class="card-stacked">
-									<div class="card-content">
-										${item.team_name}
+									<div class="card-content center">
+										<h4>${item.team_name}</h4>
 									</div>
 								</div>
 							</div>
@@ -41,15 +41,30 @@
 
                 elem.click(function(e) {
                     e.preventDefault()
-                    setStarredTeam(id, data)
                     let isStarred = elem.hasClass('checked')
 
                     if (!isStarred) {
                         elem.addClass('checked')
                     } else {
+                        var toastHTML = '<span>Deleted</span><button class="btn-flat toast-action">Undo</button>';
+                        M.toast({
+                            html: toastHTML,
+                            displayLength: '3000'
+                        });
+
                         let card = elem.closest('div.savedTeam')
-                        card.remove()
-                        elem.removeClass('checked')
+                        card.hide("slow")
+
+                        // elem.removeClass('checked')
+                        let doRemove = setTimeout(()=>{
+                            setStarredTeam(id, data)
+                        },3000)
+
+                        $('.toast-action').click(() => {
+                            card.show('slow')
+                            clearTimeout(doRemove)
+                             M.Toast.dismissAll();
+                        })
 
                         if (card.length == 0) {
                             routeEmptyStarred()

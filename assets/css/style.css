@@ -2,6 +2,10 @@ body {
     overscroll-behavior-y: contain;
 }
 
+.mt-3{
+    margin-top: 1em;
+}
+
 .scroll-to-top {
     position: fixed;
     bottom: 1em;
@@ -276,7 +280,7 @@ body {
 
 @media screen and (max-width: 768px) {
     .card.horizontal {
-        display: block !important;
+        display: block;
     }
     .card.horizontal .card-image {
         max-width: 100% !important;

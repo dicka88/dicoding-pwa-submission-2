@@ -226,7 +226,6 @@
             }
 
         }).then(res => {
-            M.toast({ html: `${res}`, classes: 'rounded' });
             console.log(res)
         })
     }
