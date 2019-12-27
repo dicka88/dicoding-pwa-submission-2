@@ -54,20 +54,45 @@ if ('Notification' in window) {
         return outputArray;
     }
 
-    const title = "Hello Football Fans"
+    //notification greetings
+
+    const dt = new Date()
+
+    let hours = dt.getHours()
+    let greetings
+    let body
+
+    if(hours < 5){
+        greetings = 'Good Night coming Morning'
+        body = "Prepare your self today"
+    }else if(hours < 10){
+        greetings = 'Good Morning'
+        body = 'Its best to start activity'
+    }else if(hours < 15){
+        greetings = 'Good Noon'
+        body = "Don't forget to eat guys"
+    }else if(hours < 19){
+        greetings = 'Good Afternooon'
+        body = "Lets see the sunset"
+    }else if(hours < 21){
+        greetings = 'Good Night'
+        body = "Take a rest after fully working today"
+    }else if(hours < 23){
+        greetings = 'Time to sleep guys'
+        body = "Rest your body, reach the dream"
+    }else{
+        greetings = 'Time to sleep guys'
+        body = "Rest your body, reach the dream"
+    }
+
+    greetings = greetings + ', Football Fans'
+
+    const title = greetings
     const option2 = {
-        body: 'Welcome to Apps My Football',
-        //requireInteraction: !0,
+        body,
         icon: './assets/img/icon-512x512.png',
         badge: './assets/img/icon-512x512.png',
-        // actions: [{
-        //     action: 'yes-action',
-        //     title: 'Yoi bro'
-        // }, {
-        //     action: 'no-action',
-        //     title: 'Tidak bro'
-        // }],
-        tag: 'option2'
+        tag: 'greetings'
     }
 
     if (Notification.permission === 'granted') {
