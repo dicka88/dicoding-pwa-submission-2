@@ -169,7 +169,6 @@ self.addEventListener('fetch', event => {
 
                 return caches.open(CACHE_NAME).then(cache => {
                     return fetch(event.request).then(response => {
-                        console.log(response)
                         cache.put(event.request.url, response.clone())
                         return response
                     })
