@@ -2,8 +2,9 @@
 </div>
 
 <script>
+    //let root = $('.root')
+
     getStarredTeam().then(res => {
-        let root = $('.root')
         if (res.length == 0) {
             routeEmptyStarred()
         } else {
@@ -30,7 +31,7 @@
 				`
             })
 
-            root.html(body)
+            $('.root').html(body)
 
             $('.team-info').each(function() {
                 let team_id = $(this).data('id')

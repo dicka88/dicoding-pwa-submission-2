@@ -2,6 +2,10 @@ body {
     overscroll-behavior-y: contain;
 }
 
+.club-match div {
+    color: white;
+}
+
 .info-club>tbody>tr>td {
     word-wrap: break-word;
 }
@@ -124,18 +128,22 @@ body {
     margin-left: 3em;
 }
 
+.club-match-header {
+    border-radius: 8px 8px 0 0;
+}
+
 
 /* blue */
 
 .club-match.blue.darken-1 {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(14, 73, 236, 1) 0%, rgba(66, 165, 245, 1) 100%);
     padding: 1em 5%;
-    border-radius: 4px 4px 0 0;
+    /*border-radius: 4px 4px 0 0;*/
 }
 
 .club-match-info.blue.darken-1 {
     background-color: #40c4ff;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     color: white;
 }
 
@@ -145,12 +153,12 @@ body {
 .club-match.red {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(251, 0, 0, 1) 0%, rgba(223, 180, 183, 1) 100%);
     padding: 1em 5%;
-    border-radius: 4px 4px 0 0;
+    /*border-radius: 4px 4px 0 0;*/
 }
 
 .club-match-info.red {
     background-color: #fc5353;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     color: white;
 }
 
@@ -160,12 +168,12 @@ body {
 .club-match.green {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(0, 106, 11, 1) 0%, rgba(143, 255, 143, 1) 100%);
     padding: 1em 5%;
-    border-radius: 4px 4px 0 0;
+    /*border-radius: 4px 4px 0 0;*/
 }
 
 .club-match-info.green {
     background-color: #75ff6e;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     color: white;
 }
 
@@ -175,12 +183,12 @@ body {
 .club-match.grey.darken-4 {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(0, 0, 0, 1) 0%, rgba(134, 134, 134, 1) 100%);
     padding: 1em 5%;
-    border-radius: 4px 4px 0 0;
+    /*border-radius: 4px 4px 0 0;*/
 }
 
 .club-match-info.grey.darken-4 {
     background-color: #666666;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 8px 8px;
     color: white;
 }
 

@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
 const route = (page) => {
 
     urlPage = "pages/" + page + ".html";
@@ -201,8 +202,8 @@ const RouterStanding = async(params) => {
                         <div class="indeterminate"></div>
                     </div>
                     `
-
     $('#body-content').html(loading)
+    getTheme()
 
     const api = 'https://api.football-data.org/v2/competitions/[team]/standings'
     const token = '65906dfb1c20470e85c965142a97d3ba'
