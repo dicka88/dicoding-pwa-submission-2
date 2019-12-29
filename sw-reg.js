@@ -2,13 +2,16 @@ if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
         navigator.serviceWorker
             .register("./sw-football.js")
-            .then(function() {
-                console.log("SW registered");
+            .then(res => {
+                console.log("SW registered")
             })
             .catch(function() {
                 console.log("SW failed");
-            });
-    });
+            })
+        navigator.serviceWorker.ready.then(function(){
+            regPushManager()
+        }).catch(()=> console.log("sw unready"))
+    })
 } else {
     console.log("ServiceWorker belum didukung browser ini.");
 }
@@ -23,22 +26,24 @@ if ('Notification' in window) {
 }
 
 //register push service google cloud messenging
-if ('PushManager' in window) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-        reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array('BBJ51slZXoZss2hxV_7pkdKAjZHFVkHjwNV3NfO1-T19OvaqeWgb8_SwSZCfjB5wNtT03IG49n4tt4jkqxCN0u0')
-        }).then(subscribe => {
-            console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
-            console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
-                null, new Uint8Array(subscribe.getKey('p256dh')))));
-            console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
-                null, new Uint8Array(subscribe.getKey('auth')))));
-        }).catch((err) => {
-            console.log("Tidak dapat melakukan subscribe " + err.message);
-
+function regPushManager(){
+    if ('PushManager' in window) {
+        navigator.serviceWorker.getRegistration().then(reg => {
+            console.log(reg)
+            reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array('BBJ51slZXoZss2hxV_7pkdKAjZHFVkHjwNV3NfO1-T19OvaqeWgb8_SwSZCfjB5wNtT03IG49n4tt4jkqxCN0u0')
+            }).then(subscribe => {
+                console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
+                    null, new Uint8Array(subscribe.getKey('p256dh')))));
+                console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
+                    null, new Uint8Array(subscribe.getKey('auth')))));
+            }).catch((err) => {
+                console.log("Tidak dapat melakukan subscribe " + err.message);
+            })
         })
-    })
+    }
 }
 
 function urlBase64ToUint8Array(base64) {
