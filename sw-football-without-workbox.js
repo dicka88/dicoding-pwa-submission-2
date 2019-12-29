@@ -107,7 +107,6 @@ self.addEventListener('fetch', event => {
     const png = '.png'
 
     let uri = event.request.url
-    console.log(uri)
 
     if (uri.indexOf(api_url) > -1) {
         event.respondWith(

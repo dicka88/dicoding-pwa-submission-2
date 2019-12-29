@@ -1,7 +1,7 @@
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
         navigator.serviceWorker
-            .register("./sw-football.js")
+            .register("./sw-football-with-workbox.js")
             .then(res => {
                 console.log("SW registered")
             })
