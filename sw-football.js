@@ -27,8 +27,6 @@ const urlToCache = [
     "./assets/js/indexDb.js",
     "./assets/js/settings.js",
 
-    //image
-    "./assets/img/icon-512x512.png",
     //player
     "./assets/img/player/cr7.jpg",
     "./assets/img/player/messi.jpg",
@@ -101,47 +99,6 @@ self.addEventListener("activate", function(event) {
         })
     );
 });
-
-//default
-// self.addEventListener("fetch", function(event) {
-//     event.respondWith(
-//       caches
-//         .match(event.request, { cacheName: CACHE_NAME })
-//         .then(function(response) {
-//           if (response) {
-//             console.log("sw offline:  ", response.url);
-//             return response;
-//           }
-
-//           console.log(
-//             "sw online:  ",
-//             event.request.url
-//           );
-//           return fetch(event.request);
-//         })
-//     );
-// });
-
-//default
-// self.addEventListener("fetch", function(event) {
-//     event.respondWith(
-//         caches
-//         .match(event.request, { cacheName: CACHE_NAME })
-//         .then(function(response) {
-//             if (response) {
-//                 console.log("sw offline:  ", response.url);
-//                 return response;
-//             }
-
-//             console.log(
-//                 "sw online:  ",
-//                 event.request.url
-//             );
-
-//             return fetch(event.request);
-//         })
-//     );
-// });
 
 self.addEventListener('fetch', event => {
     const api_url = 'https://api.football-data.org/v2/'

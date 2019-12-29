@@ -1,4 +1,4 @@
-<div class="root">
+<div class="row root">
 </div>
 
 <script>
@@ -11,9 +11,9 @@
             let body = `<div><center><h4>My Favorite Teams</h4></center></div>`
             res.forEach(item => {
                 body += `
-					<div class="card horizontal savedTeam">
+					<div class="">
 						<div class="col s12 mt-3">
-							<div class="card horizontal">
+							<div class="card horizontal savedTeam">
 								<a href="#!" data-id="${item.team_id}" data-name="${item.team_name}" class="starred checked"><i class="small material-icons circle">grade</i></a>
 								<div class="card-image icon-club">
                                     <a href="#" data-id="${item.team_id}" class="team-info">

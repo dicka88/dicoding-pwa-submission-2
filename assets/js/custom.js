@@ -199,7 +199,7 @@ const setMaterialize = () => {
 const RouterStanding = async(params) => {
 
     let loading = `<div class="col s3 l3 progress">
-                        <div class="indeterminate"></div>
+                        <div class="indeterminate blue darken-1"></div>
                     </div>
                     `
     $('#body-content').html(loading)

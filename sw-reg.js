@@ -90,8 +90,8 @@ if ('Notification' in window) {
     const title = greetings
     const option2 = {
         body,
-        icon: './assets/img/icon-512x512.png',
-        badge: './assets/img/icon-512x512.png',
+        icon: './assets/img/icon/Icon-512.png',
+        badge: './assets/img/icon/Icon-512.png',
         tag: 'greetings'
     }
 
