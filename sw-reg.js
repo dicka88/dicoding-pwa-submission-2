@@ -19,7 +19,13 @@ if ("serviceWorker" in navigator) {
 if ('Notification' in window) {
      Notification.requestPermission()
         .then(res => {
-            console.log(res)
+            if (res === 'granted') {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(title, option2)
+                })
+            } else {
+                console.log("Notification rejected");
+            }
         })
 } else {
     console.log("Notification didn't supported by this browser");
@@ -29,7 +35,6 @@ if ('Notification' in window) {
 function regPushManager(){
     if ('PushManager' in window) {
         navigator.serviceWorker.getRegistration().then(reg => {
-            console.log(reg)
             reg.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array('BBJ51slZXoZss2hxV_7pkdKAjZHFVkHjwNV3NfO1-T19OvaqeWgb8_SwSZCfjB5wNtT03IG49n4tt4jkqxCN0u0')
@@ -98,12 +103,4 @@ const option2 = {
     icon: './assets/img/icon/Icon-512.png',
     badge: './assets/img/icon/Icon-512.png',
     tag: 'greetings'
-}
-
-if (Notification.permission === 'granted') {
-    navigator.serviceWorker.ready.then(reg => {
-        reg.showNotification(title, option2)
-    })
-} else {
-    console.log("tdk bisa");
 }
