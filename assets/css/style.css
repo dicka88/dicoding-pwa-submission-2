@@ -2,11 +2,6 @@ body {
     overscroll-behavior-y: contain;
 }
 
-.card-image{
-    display: flex;
-    justify-content: center;
-}
-
 .club-match div {
     color: white;
 }
