@@ -1,13 +1,12 @@
-const root = $('.root')
-const url_params = window.location.href
+var getTeamById = async() => {
+    const root = $('.root')
+    const url_params = window.location.href
 
-const url = new URL(url_params)
-const getval = url.hash.indexOf('?')
-const params = new URLSearchParams(url.hash.substr(getval))
+    const url = new URL(url_params)
+    const getval = url.hash.indexOf('?')
+    const params = new URLSearchParams(url.hash.substr(getval))
 
-const team_id = params.get('id')
-
-const getTeamById = async() => {
+    const team_id = params.get('id')
     console.log(team_id)
     if (team_id == null) {
         //show home of team page
